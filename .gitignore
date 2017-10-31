@@ -21,3 +21,6 @@
 # Custom
 .rubocop.yml
 config/identifier_tmdb.yml
+/public/packs
+/public/packs-test
+/node_modules
