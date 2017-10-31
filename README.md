@@ -31,3 +31,9 @@ Things you may want to cover:
 ### Use Bootstrap (3 or 4), foundation 6 or Vanilla CSS
 ### Leverage https://www.themoviedb.org to retrieve content
 ### Remove Coffeescript
+
+## Behaviors:
+### _Home Page_:
+#### Display current popular movies & TV shows
+#### Display last visited movies & TV shows
+#### Display popular movies & TV shows
