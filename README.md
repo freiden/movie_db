@@ -22,3 +22,12 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+## Objectives:
+### Use Traktor
+### Use VueJS, ELM or GraphQL
+### Use Ruby
+### Use Rust
+### Use Bootstrap (3 or 4), foundation 6 or Vanilla CSS
+### Leverage https://www.themoviedb.org to retrieve content
+### Remove Coffeescript

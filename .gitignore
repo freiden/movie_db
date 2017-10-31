@@ -17,3 +17,7 @@
 /yarn-error.log
 
 .byebug_history
+
+# Custom
+.rubocop.yml
+config/identifier_tmdb.yml
