@@ -24,6 +24,9 @@ Things you may want to cover:
 * ...
 
 ## Objectives:
+### Technologies:
+
+#### Development
 * Use _Ruby_/_Rails_ for the BE
 * Use _Rust_ (faster JSON parsing)
 * Use _Elixir_ (Web crawler)
@@ -32,6 +35,13 @@ Things you may want to cover:
 * Use _Bootstrap_ (3 or 4), _foundation_ (6) or _vanilla CSS_
 * Leverage https://www.themoviedb.org to retrieve content
 * Remove _Coffeescript_ (Don't work with Elm)
+
+#### Tests
+* _Pact_ for contracts between FE/BE
+* _Rspec_ for units & functionals tests in Ruby
+* _ChromeDriver_ for E2E tests
+* _ExUnit_ for Elixir tests
+* ...
 
 ## Behaviors:
 ### BE/FE architecture:
