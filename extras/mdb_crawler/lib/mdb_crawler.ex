@@ -34,4 +34,8 @@ defmodule MdbCrawler do
     |> SuperCineBattleCrawler.parse # Transform content into data
     |> store # Store retrieve datas
   end
+
+  def store(_) do
+    :ok
+  end
 end
