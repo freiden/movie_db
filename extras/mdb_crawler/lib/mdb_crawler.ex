@@ -17,7 +17,7 @@ defmodule MdbCrawler do
   end
 
   def list do
-    [:supercinebattle]
+    ["supercinebattle"]
   end
 
   def crawl(:senscritique) do

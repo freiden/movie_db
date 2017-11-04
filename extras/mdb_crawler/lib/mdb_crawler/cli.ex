@@ -4,6 +4,9 @@ defmodule MdbCrawler.CLI do
   the various functions that end up fetch data from the
   crawled websites.
   """
+
+  @crawlers ["supercinebattle"]
+
   def run(argv) do
     argv
     |> parse_args
@@ -26,8 +29,10 @@ defmodule MdbCrawler.CLI do
 
     case parse do
       {[help: true], _, _} -> :help
-      {[crawler: crawler], _, _} -> String.to_atom(crawler)
-      {_, [crawler], _} -> String.to_atom(crawler)
+      {[crawler: crawler], _, _} when crawler in @crawlers ->
+        String.to_atom(crawler)
+      {_, [crawler], _} when crawler in @crawlers ->
+        String.to_atom(crawler)
       _ -> :help
     end
   end
