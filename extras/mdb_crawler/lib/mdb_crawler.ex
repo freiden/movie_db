@@ -16,6 +16,10 @@ defmodule MdbCrawler do
     :world
   end
 
+  def list do
+    [:supercinebattle]
+  end
+
   def crawl(:senscritique) do
     # TBD
     # Usage of SenscritiqueCrawler

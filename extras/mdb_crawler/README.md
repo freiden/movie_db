@@ -33,6 +33,12 @@ be found at [https://hexdocs.pm/mdb_crawler](https://hexdocs.pm/mdb_crawler).
 * 1 Crawler per site
 * Use the same pattern for crawling
 
+##### CLI
+* CLI can be called with the following ways:
+  * -h, --help => Provide infos on how to use the CLI.
+  * -c, --crawler => Passed with a defined name it will crawl the associated website.
+  * Directly called with a defined name it will crawl the associated website.
+
 #### SuperCineBattle:
 * Basic crawling:
   * Once the main page > Go to the list
