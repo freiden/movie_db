@@ -3,7 +3,7 @@ defmodule CliTest do
   doctest MdbCrawler
 
   import ExUnit.CaptureIO
-  import MdbCrawler.CLI, only: [parse_args: 1]
+  import MdbCrawler.CLI, only: [parse_args: 1, process: 1]
 
   describe ".parse_args/1" do
     test ":help returned by option parsing with -h and --help options" do
@@ -30,7 +30,9 @@ defmodule CliTest do
   #   # Can't be tested for the moment because the System.halt/1 function stop the test suite
   #   test "when :help is passed it returns a string" do
   #     # assert process(:help) == System.halt(0)
-  #     # assert capture_io(process(:help)) =~ "Usage:"
+  #     assert capture_io(fn ->
+  #             assert process(:help) == 0
+  #           end) =~ "Usage:"
   #     # assert catch_exit(process(:help)) == 0
   #   end
   #
