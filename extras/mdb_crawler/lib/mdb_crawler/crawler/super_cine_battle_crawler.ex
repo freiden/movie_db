@@ -19,27 +19,27 @@ defmodule MdbCrawler.Crawler.SuperCineBattleCrawler do
     :world
   end
 
-  # @doc """
-  # Function goal is to retrieve the data from the website.
-  # Parameter => url
-  # Result => List of HTML content
-  # """
-  # def fetch(url \\ @url) do
-  #   url
-  #   |> HTTPoison.get(@hearders, @options)
-  #   |> handle_response
-  # end
+  @doc """
+  Function goal is to retrieve the data from the website.
+  Parameter => url
+  Result => List of HTML content
+  """
+  def fetch(url \\ @url) do
+    url
+    |> HTTPoison.get(@hearders, @options)
+    |> handle_response
+  end
 
-  # @doc """
-  # Function goal is to return the HTML of the source
-  # """
-  # def handle_response({:ok, %{body: body}}) do
-  #   body
-  # end
-  #
-  # def handle_response(_response) do
-  #   []
-  # end
+  @doc """
+  Function goal is to return the HTML of the source
+  """
+  def handle_response({:ok, %{body: body}}) do
+    body
+  end
+
+  def handle_response(_response) do
+    ""
+  end
 
   def get_links([]) do
     []
@@ -58,22 +58,30 @@ defmodule MdbCrawler.Crawler.SuperCineBattleCrawler do
   2/ Create map with the following infos %{<year> => <body>}
   """
   def get_bodies(urls) do
-    years = Enum.map(urls, fn(url) ->
-      with [_|[year]] <- Regex.run(~r/annees-(\d+)/, url) do
-        %{year => url}
-      end
+    Enum.into(urls, %{}, fn(url) -> 
+      {url, fetch(url)}  
     end)
   end
 
   @doc """
   Function goal is to transform html into list or maps
   """
-  def parse([]) do
-    # Do nothing
-  end
+  # def parse(%{}) do
+  #   %{}
+  # end
 
-  def parse(list) do
-    list
-    # |>
+  def parse(datas) do
+    Enum.into(datas, %{}, fn({url, body}) -> 
+      rows = body
+        |> Floki.find(".tableizer-table tbody tr")
+      
+      Enum.each(rows, fn({_, _, [{td_position}, td_title, td_show_nb]}) -> 
+        # {_,_, [position]}, {_, _, [title]}, {_, _, [show_nb]}]}
+        # IO.inspect("#{position} - #{title} _ #{show_nb}")
+
+      end)
+
+      {url, rows}
+    end)
   end
 end
