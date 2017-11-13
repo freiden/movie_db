@@ -66,22 +66,35 @@ defmodule MdbCrawler.Crawler.SuperCineBattleCrawler do
   @doc """
   Function goal is to transform html into list or maps
   """
-  # def parse(%{}) do
-  #   %{}
-  # end
+  def parse(datas) when map_size(datas) == 0, do: []
 
   def parse(datas) do
+    IO.puts "parse(datas)"
     Enum.into(datas, %{}, fn({url, body}) -> 
-      rows = body
-        |> Floki.find(".tableizer-table tbody tr")
+      transformed_rows = body
+      |> Floki.find(".tableizer-table tbody tr")
+      |> fetch_rows
       
-      Enum.each(rows, fn({_, _, [{td_position}, td_title, td_show_nb]}) -> 
-        # {_,_, [position]}, {_, _, [title]}, {_, _, [show_nb]}]}
-        # IO.inspect("#{position} - #{title} _ #{show_nb}")
-
-      end)
-
-      {url, rows}
-    end)
+      {url, transformed_rows}
+    end)  
+  end  
+  
+  def fetch_rows(rows) do
+    Enum.map(rows, &fetch_row_infos(&1))
   end
+
+  def fetch_row_infos(row) do
+    with {_, _, [position_info, title_info, show_info]} <- row do
+      position = fetch_td_value(position_info)
+      title = fetch_td_value(title_info)
+      show_nb = fetch_td_value(show_info)
+
+      [position, title, show_nb]
+    end
+  end
+
+  def fetch_td_value(td_info) do
+    with {_, _, [value]} <- td_info, do: value
+  end
+
 end
