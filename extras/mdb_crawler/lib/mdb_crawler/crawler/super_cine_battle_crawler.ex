@@ -11,13 +11,11 @@ defmodule MdbCrawler.Crawler.SuperCineBattleCrawler do
    "https://www.supercinebattle.fr/la-liste-ultime-des-films-des-annees-80/",
    "https://www.supercinebattle.fr/la-liste-ultime-des-films-des-annees-90/"]
   """
+  require Logger
+
   @url "https://www.supercinebattle.fr/"
   @hearders []
   @options [follow_redirect: true]
-
-  def hello do
-    :world
-  end
 
   @doc """
   Function goal is to retrieve the data from the website.
@@ -45,6 +43,9 @@ defmodule MdbCrawler.Crawler.SuperCineBattleCrawler do
     []
   end
 
+  @doc """
+  Function used to parse HTML to return a list of links
+  """
   def get_links(body) do
     body
     |> Floki.find(".widget_pages ul a") # Retrieve links to pages
@@ -68,8 +69,10 @@ defmodule MdbCrawler.Crawler.SuperCineBattleCrawler do
   """
   def parse(datas) when map_size(datas) == 0, do: []
 
+  @doc """
+  Function used to parse HTML table
+  """
   def parse(datas) do
-    IO.puts "parse(datas)"
     Enum.into(datas, %{}, fn({url, body}) -> 
       transformed_rows = body
       |> Floki.find(".tableizer-table tbody tr")
@@ -79,22 +82,39 @@ defmodule MdbCrawler.Crawler.SuperCineBattleCrawler do
     end)  
   end  
   
+  @doc """
+  Function used to manage table rows
+  """
   def fetch_rows(rows) do
     Enum.map(rows, &fetch_row_infos(&1))
   end
 
+  @doc """
+  Function used to fetch values from table row
+  """
   def fetch_row_infos(row) do
     with {_, _, [position_info, title_info, show_info]} <- row do
       position = fetch_td_value(position_info)
       title = fetch_td_value(title_info)
       show_nb = fetch_td_value(show_info)
 
-      [position, title, show_nb]
+      {position, title, show_nb}
+    else
+      err -> Logger.error "Error parsing the row data #{inspect err}"
+      {}
     end
   end
 
+  @doc """
+  Function used to return row value
+  """
   def fetch_td_value(td_info) do
-    with {_, _, [value]} <- td_info, do: value
+    with {_, _, [value]} <- td_info do 
+      value
+    else
+      err -> Logger.error "Error parsing the td data #{inspect err}"
+      ""
+    end
   end
 
 end

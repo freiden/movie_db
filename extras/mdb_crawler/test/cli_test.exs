@@ -2,8 +2,7 @@ defmodule CliTest do
   use ExUnit.Case
   doctest MdbCrawler
 
-  import ExUnit.CaptureIO
-  import MdbCrawler.CLI, only: [parse_args: 1, process: 1]
+  import MdbCrawler.CLI, only: [parse_args: 1]
 
   describe ".parse_args/1" do
     test ":help returned by option parsing with -h and --help options" do
