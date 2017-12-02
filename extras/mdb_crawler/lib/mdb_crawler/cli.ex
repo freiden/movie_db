@@ -13,7 +13,7 @@ defmodule MdbCrawler.CLI do
     |> process
   end
 
-  @moduledoc """
+  @doc """
   `argv` can be -h or --help, which returns :help.
   `argv` can be -c or --crawler and an available `crawler` name, it returns the
   crawler name as an atom.

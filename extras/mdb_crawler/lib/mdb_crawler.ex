@@ -3,6 +3,7 @@ defmodule MdbCrawler do
   Documentation for MdbCrawler.
   """
   alias MdbCrawler.Crawler.SuperCineBattleCrawler, as: SuperCineBattleCrawler
+  alias MdbCrawler.Crawler.SenscritiqueCrawler, as: SenscritiqueCrawler
 
   @doc """
   Hello world.
