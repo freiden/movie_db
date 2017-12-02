@@ -39,7 +39,7 @@ Things you may want to cover:
 #### Tests
 * _Pact_ for contracts between FE/BE
 * _Rspec_ for units & functionals tests in Ruby
-* _ChromeDriver_ for E2E tests
+* _ChromeDriver_ for E2E tests => Puppeteer
 * _ExUnit_ for Elixir tests
 * ...
 
