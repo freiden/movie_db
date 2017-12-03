@@ -50,6 +50,29 @@ defmodule MdbCrawler.Crawler.SenscritiqueCrawler do
     |> Floki.attribute("href") # Retrieve urls from links
   end
 
+  @doc """
+  Fetch links to retrieve movie page relative path.
+
+  """
+  def fetch_movie_page_link(relative_paths) do
+    relative_paths
+    |> Enum.find(fn(relative_path) -> Regex.match?(~r/films/, relative_path) end)
+  end
+
+  @doc """
+  Fetch useful links from movie page
+
+  """
+  def fetch_movie_page_links(relative_path) when is_nil(relative_path), do: []
+
+  def fetch_movie_page_links(relative_path) do
+    url = @url <> relative_path
+
+    url
+    |> fetch
+    |> Floki.find("...")
+  end
+
   # @doc """
   # Return list of bodies
   # Steps:
@@ -57,8 +80,8 @@ defmodule MdbCrawler.Crawler.SenscritiqueCrawler do
   # 2/ Create map with the following infos %{<year> => <body>}
   # """
   # def get_bodies(urls) do
-  #   Enum.into(urls, %{}, fn(url) -> 
-  #     {url, fetch(url)}  
+  #   Enum.into(urls, %{}, fn(url) ->
+  #     {url, fetch(url)}
   #   end)
   # end
 
@@ -71,15 +94,15 @@ defmodule MdbCrawler.Crawler.SenscritiqueCrawler do
   # Function used to parse HTML table
   # """
   # def parse(datas) do
-  #   Enum.into(datas, %{}, fn({url, body}) -> 
+  #   Enum.into(datas, %{}, fn({url, body}) ->
   #     transformed_rows = body
   #     |> Floki.find(".tableizer-table tbody tr")
   #     |> fetch_rows
-      
+
   #     {url, transformed_rows}
-  #   end)  
-  # end  
-  
+  #   end)
+  # end
+
   # @doc """
   # Function used to manage table rows
   # """
@@ -107,7 +130,7 @@ defmodule MdbCrawler.Crawler.SenscritiqueCrawler do
   # Function used to return row value
   # """
   # def fetch_td_value(td_info) do
-  #   with {_, _, [value]} <- td_info do 
+  #   with {_, _, [value]} <- td_info do
   #     value
   #   else
   #     err -> Logger.error "Error parsing the td data #{inspect err}"
