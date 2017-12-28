@@ -61,6 +61,9 @@ defmodule MdbCrawler.Crawler.SenscritiqueCrawler do
 
   @doc """
   Fetch useful links from movie page
+  ["/films/toujours-a-l-affiche", "/films/sorties-cinema/2018/semaine/01",
+   "/top/resultats/Les_meilleurs_films_de_2017/1522840", "/films/sondages",
+   "/everymovie/programme-tv"]
 
   """
   def fetch_movie_page_links(relative_path) when is_nil(relative_path), do: []
@@ -70,7 +73,13 @@ defmodule MdbCrawler.Crawler.SenscritiqueCrawler do
 
     url
     |> fetch
-    |> Floki.find("...")
+    |> Floki.find("li.header-navigation-main-wrapper a")
+    |> Floki.attribute("href")
+  end
+
+  def fetch_movies_list_links(links) do
+    links
+    |> Enum.filter(fn(relative_path) -> Regex.match?(~r/(\/films\/toujours.+affiche|\/top\/.+meilleurs_films)/, relative_path) end)
   end
 
   # @doc """
