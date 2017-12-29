@@ -77,63 +77,67 @@ defmodule MdbCrawler.Crawler.SenscritiqueCrawler do
     |> Floki.attribute("href")
   end
 
-  def fetch_movies_list_links(links) do
-    links
+  @doc """
+  Fetch provided relative_paths to return only those matching the defined pattern.
+  Return a list of relative_paths
+  """
+  def fetch_movie_list_links(relative_paths) do
+    relative_paths
     |> Enum.filter(fn(relative_path) -> Regex.match?(~r/(\/films\/toujours.+affiche|\/top\/.+meilleurs_films)/, relative_path) end)
   end
 
   # @doc """
   # Return list of bodies
   # Steps:
-  # 1/ Parse url to retrieve the year
-  # 2/ Create map with the following infos %{<year> => <body>}
+  # 1/ Parse relative_path
+  # 2/ Create map with the following infos %{<relative_path> => <body>}
   # """
-  # def get_bodies(urls) do
-  #   Enum.into(urls, %{}, fn(url) ->
-  #     {url, fetch(url)}
-  #   end)
-  # end
+  def get_bodies(relative_paths) do
+    Enum.into(relative_paths, %{}, fn(relative_path) ->
+      {relative_path, fetch(@url <> relative_path)}
+    end)
+  end
 
-  # @doc """
-  # Function goal is to transform html into list or maps
-  # """
-  # def parse(datas) when map_size(datas) == 0, do: []
+  @doc """
+  Function goal is to transform html into list or maps
+  """
+  def parse(datas) when map_size(datas) == 0, do: []
 
-  # @doc """
-  # Function used to parse HTML table
-  # """
-  # def parse(datas) do
-  #   Enum.into(datas, %{}, fn({url, body}) ->
-  #     transformed_rows = body
-  #     |> Floki.find(".tableizer-table tbody tr")
-  #     |> fetch_rows
+  @doc """
+  Function used to parse HTML table
+  """
+  def parse(datas) do
+    Enum.into(datas, %{}, fn({relative_path, body}) ->
+      transformed_rows = body
+      |> Floki.find(".d-grid-main li.elpr-item")
+      |> fetch_rows
 
-  #     {url, transformed_rows}
-  #   end)
-  # end
+      {relative_path, transformed_rows}
+    end)
+  end
 
-  # @doc """
-  # Function used to manage table rows
-  # """
-  # def fetch_rows(rows) do
-  #   Enum.map(rows, &fetch_row_infos(&1))
-  # end
+  @doc """
+  Function used to manage table rows
+  """
+  def fetch_rows(rows) do
+    Enum.map(rows, &fetch_row_infos(&1))
+  end
 
-  # @doc """
-  # Function used to fetch values from table row
-  # """
-  # def fetch_row_infos(row) do
-  #   with {_, _, [position_info, title_info, show_info]} <- row do
-  #     position = fetch_td_value(position_info)
-  #     title = fetch_td_value(title_info)
-  #     show_nb = fetch_td_value(show_info)
+  @doc """
+  Function used to fetch values from table row
+  """
+  def fetch_row_infos(row) do
+    # with {_, _, [position_info, title_info, show_info]} <- row do
+    #   position = fetch_td_value(position_info)
+    #   title = fetch_td_value(title_info)
+    #   show_nb = fetch_td_value(show_info)
 
-  #     {position, title, show_nb}
-  #   else
-  #     err -> Logger.error "Error parsing the row data #{inspect err}"
-  #     {}
-  #   end
-  # end
+    #   {position, title, show_nb}
+    # else
+    #   err -> Logger.error "Error parsing the row data #{inspect err}"
+    #   {}
+    # end
+  end
 
   # @doc """
   # Function used to return row value
